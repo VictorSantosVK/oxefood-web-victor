@@ -150,6 +150,7 @@ export default function FormCliente() {
                                         placeholder="Ex: 20/03/1985"
                                         value={dataNascimento}
                                         onChange={e => setDataNascimento(e.target.value)}
+                                        
                                     />
                                 </Form.Input>
                             </Form.Group>
