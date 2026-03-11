@@ -15,7 +15,6 @@ import FormEntregador from "./views/entregador/FormEntregador";
 function Rotas() {
   return (
     <Routes>
-
       <Route path="/" element={<Home />} />
 
       <Route path="/list-cliente" element={<ListCliente />} />
@@ -26,7 +25,6 @@ function Rotas() {
 
       <Route path="/list-entregador" element={<ListEntregador />} />
       <Route path="/form-entregador" element={<FormEntregador />} />
-
     </Routes>
   );
 }

@@ -17,12 +17,7 @@ export default function ListProduto() {
 
   function carregarLista() {
     axios.get("http://localhost:8080/api/produto")
-      .then((response) => {
-        setLista(response.data);
-      })
-      .catch(() => {
-        console.log("Erro ao carregar lista de produtos.");
-      });
+      .then((response) => setLista(response.data));
   }
 
   function confirmarRemover(id) {
@@ -35,9 +30,6 @@ export default function ListProduto() {
       .then(() => {
         setOpenConfirm(false);
         carregarLista();
-      })
-      .catch(() => {
-        console.log("Erro ao remover produto.");
       });
   }
 
@@ -46,9 +38,6 @@ export default function ListProduto() {
       .then((response) => {
         setProdutoSelecionado(response.data);
         setOpenModal(true);
-      })
-      .catch(() => {
-        console.log("Erro ao visualizar produto.");
       });
   }
 
@@ -72,16 +61,16 @@ export default function ListProduto() {
               to="/form-produto"
             />
 
-            <br />
-            <br />
-            <br />
+            <br /><br /><br />
 
-            <Table color="orange" sortable celled>
+            <Table color="orange" celled>
               <Table.Header>
                 <Table.Row>
-                  <Table.HeaderCell>Nome</Table.HeaderCell>
-                  <Table.HeaderCell>Descrição</Table.HeaderCell>
-                  <Table.HeaderCell>Valor</Table.HeaderCell>
+                  <Table.HeaderCell>Código</Table.HeaderCell>
+                  <Table.HeaderCell>Título</Table.HeaderCell>
+                  <Table.HeaderCell>Valor Unitário</Table.HeaderCell>
+                  <Table.HeaderCell>Tempo Mín.</Table.HeaderCell>
+                  <Table.HeaderCell>Tempo Máx.</Table.HeaderCell>
                   <Table.HeaderCell textAlign="center">Ações</Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
@@ -89,43 +78,25 @@ export default function ListProduto() {
               <Table.Body>
                 {lista.map((produto) => (
                   <Table.Row key={produto.id}>
-                    <Table.Cell>{produto.nome}</Table.Cell>
-                    <Table.Cell>{produto.descricao}</Table.Cell>
-                    <Table.Cell>{produto.valor}</Table.Cell>
+                    <Table.Cell>{produto.codigo}</Table.Cell>
+                    <Table.Cell>{produto.titulo}</Table.Cell>
+                    <Table.Cell>{produto.valorUnitario}</Table.Cell>
+                    <Table.Cell>{produto.tempoEntregaMinimo}</Table.Cell>
+                    <Table.Cell>{produto.tempoEntregaMaximo}</Table.Cell>
                     <Table.Cell textAlign="center">
-                      <Button
-                        inverted
-                        circular
-                        color="blue"
-                        title="Visualizar registro completo"
-                        icon
-                        onClick={() => visualizar(produto.id)}
-                      >
+                      <Button inverted circular color="blue" icon onClick={() => visualizar(produto.id)}>
                         <Icon name="eye" />
                       </Button>
                       &nbsp;
 
                       <Link to="/form-produto" state={{ id: produto.id }}>
-                        <Button
-                          inverted
-                          circular
-                          color="green"
-                          title="Clique aqui para editar os dados deste produto"
-                          icon
-                        >
+                        <Button inverted circular color="green" icon>
                           <Icon name="edit" />
                         </Button>
                       </Link>
                       &nbsp;
 
-                      <Button
-                        inverted
-                        circular
-                        color="red"
-                        title="Clique aqui para remover este produto"
-                        icon
-                        onClick={() => confirmarRemover(produto.id)}
-                      >
+                      <Button inverted circular color="red" icon onClick={() => confirmarRemover(produto.id)}>
                         <Icon name="trash" />
                       </Button>
                     </Table.Cell>
@@ -148,9 +119,12 @@ export default function ListProduto() {
         <Modal.Header>Detalhes do Produto</Modal.Header>
         <Modal.Content>
           <p><strong>ID:</strong> {produtoSelecionado.id}</p>
-          <p><strong>Nome:</strong> {produtoSelecionado.nome}</p>
+          <p><strong>Código:</strong> {produtoSelecionado.codigo}</p>
+          <p><strong>Título:</strong> {produtoSelecionado.titulo}</p>
           <p><strong>Descrição:</strong> {produtoSelecionado.descricao}</p>
-          <p><strong>Valor:</strong> {produtoSelecionado.valor}</p>
+          <p><strong>Valor Unitário:</strong> {produtoSelecionado.valorUnitario}</p>
+          <p><strong>Tempo Entrega Mínimo:</strong> {produtoSelecionado.tempoEntregaMinimo}</p>
+          <p><strong>Tempo Entrega Máximo:</strong> {produtoSelecionado.tempoEntregaMaximo}</p>
         </Modal.Content>
         <Modal.Actions>
           <Button color="grey" onClick={() => setOpenModal(false)}>

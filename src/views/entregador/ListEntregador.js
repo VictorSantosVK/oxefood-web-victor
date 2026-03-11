@@ -17,12 +17,13 @@ export default function ListEntregador() {
 
   function carregarLista() {
     axios.get("http://localhost:8080/api/entregador")
-      .then((response) => {
-        setLista(response.data);
-      })
-      .catch(() => {
-        console.log("Erro ao carregar lista de entregadores.");
-      });
+      .then((response) => setLista(response.data));
+  }
+
+  function formatarData(dataParam) {
+    if (!dataParam) return "";
+    let arrayData = dataParam.split("-");
+    return arrayData[2] + "/" + arrayData[1] + "/" + arrayData[0];
   }
 
   function confirmarRemover(id) {
@@ -35,9 +36,6 @@ export default function ListEntregador() {
       .then(() => {
         setOpenConfirm(false);
         carregarLista();
-      })
-      .catch(() => {
-        console.log("Erro ao remover entregador.");
       });
   }
 
@@ -46,9 +44,6 @@ export default function ListEntregador() {
       .then((response) => {
         setEntregadorSelecionado(response.data);
         setOpenModal(true);
-      })
-      .catch(() => {
-        console.log("Erro ao visualizar entregador.");
       });
   }
 
@@ -72,18 +67,16 @@ export default function ListEntregador() {
               to="/form-entregador"
             />
 
-            <br />
-            <br />
-            <br />
+            <br /><br /><br />
 
-            <Table color="orange" sortable celled>
+            <Table color="orange" celled>
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell>Nome</Table.HeaderCell>
                   <Table.HeaderCell>CPF</Table.HeaderCell>
-                  <Table.HeaderCell>RG</Table.HeaderCell>
                   <Table.HeaderCell>Fone Celular</Table.HeaderCell>
-                  <Table.HeaderCell>Placa Veículo</Table.HeaderCell>
+                  <Table.HeaderCell>Qtd. Entregas</Table.HeaderCell>
+                  <Table.HeaderCell>Valor Frete</Table.HeaderCell>
                   <Table.HeaderCell textAlign="center">Ações</Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
@@ -93,43 +86,23 @@ export default function ListEntregador() {
                   <Table.Row key={entregador.id}>
                     <Table.Cell>{entregador.nome}</Table.Cell>
                     <Table.Cell>{entregador.cpf}</Table.Cell>
-                    <Table.Cell>{entregador.rg}</Table.Cell>
                     <Table.Cell>{entregador.foneCelular}</Table.Cell>
-                    <Table.Cell>{entregador.placaVeiculo}</Table.Cell>
+                    <Table.Cell>{entregador.qtdEntregasRealizadas}</Table.Cell>
+                    <Table.Cell>{entregador.valorFrete}</Table.Cell>
                     <Table.Cell textAlign="center">
-                      <Button
-                        inverted
-                        circular
-                        color="blue"
-                        title="Visualizar registro completo"
-                        icon
-                        onClick={() => visualizar(entregador.id)}
-                      >
+                      <Button inverted circular color="blue" icon onClick={() => visualizar(entregador.id)}>
                         <Icon name="eye" />
                       </Button>
                       &nbsp;
 
                       <Link to="/form-entregador" state={{ id: entregador.id }}>
-                        <Button
-                          inverted
-                          circular
-                          color="green"
-                          title="Clique aqui para editar os dados deste entregador"
-                          icon
-                        >
+                        <Button inverted circular color="green" icon>
                           <Icon name="edit" />
                         </Button>
                       </Link>
                       &nbsp;
 
-                      <Button
-                        inverted
-                        circular
-                        color="red"
-                        title="Clique aqui para remover este entregador"
-                        icon
-                        onClick={() => confirmarRemover(entregador.id)}
-                      >
+                      <Button inverted circular color="red" icon onClick={() => confirmarRemover(entregador.id)}>
                         <Icon name="trash" />
                       </Button>
                     </Table.Cell>
@@ -155,8 +128,19 @@ export default function ListEntregador() {
           <p><strong>Nome:</strong> {entregadorSelecionado.nome}</p>
           <p><strong>CPF:</strong> {entregadorSelecionado.cpf}</p>
           <p><strong>RG:</strong> {entregadorSelecionado.rg}</p>
+          <p><strong>Data Nascimento:</strong> {formatarData(entregadorSelecionado.dataNascimento)}</p>
           <p><strong>Fone Celular:</strong> {entregadorSelecionado.foneCelular}</p>
-          <p><strong>Placa Veículo:</strong> {entregadorSelecionado.placaVeiculo}</p>
+          <p><strong>Fone Fixo:</strong> {entregadorSelecionado.foneFixo}</p>
+          <p><strong>Qtd. Entregas Realizadas:</strong> {entregadorSelecionado.qtdEntregasRealizadas}</p>
+          <p><strong>Valor Frete:</strong> {entregadorSelecionado.valorFrete}</p>
+          <p><strong>Rua:</strong> {entregadorSelecionado.enderecoRua}</p>
+          <p><strong>Complemento:</strong> {entregadorSelecionado.enderecoComplemento}</p>
+          <p><strong>Número:</strong> {entregadorSelecionado.enderecoNumero}</p>
+          <p><strong>Bairro:</strong> {entregadorSelecionado.enderecoBairro}</p>
+          <p><strong>Cidade:</strong> {entregadorSelecionado.enderecoCidade}</p>
+          <p><strong>CEP:</strong> {entregadorSelecionado.enderecoCep}</p>
+          <p><strong>UF:</strong> {entregadorSelecionado.enderecoUf}</p>
+          <p><strong>Ativo:</strong> {String(entregadorSelecionado.ativo)}</p>
         </Modal.Content>
         <Modal.Actions>
           <Button color="grey" onClick={() => setOpenModal(false)}>

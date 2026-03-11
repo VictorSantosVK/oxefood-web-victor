@@ -8,35 +8,46 @@ export default function FormProduto() {
   const { state } = useLocation();
 
   const [idProduto, setIdProduto] = useState();
-  const [nome, setNome] = useState("");
+  const [codigo, setCodigo] = useState("");
+  const [titulo, setTitulo] = useState("");
   const [descricao, setDescricao] = useState("");
-  const [valor, setValor] = useState("");
+  const [valorUnitario, setValorUnitario] = useState("");
+  const [tempoEntregaMinimo, setTempoEntregaMinimo] = useState("");
+  const [tempoEntregaMaximo, setTempoEntregaMaximo] = useState("");
 
   useEffect(() => {
     if (state != null && state.id != null) {
       axios.get("http://localhost:8080/api/produto/" + state.id)
         .then((response) => {
           setIdProduto(response.data.id);
-          setNome(response.data.nome);
-          setDescricao(response.data.descricao);
-          setValor(response.data.valor);
+          setCodigo(response.data.codigo || "");
+          setTitulo(response.data.titulo || "");
+          setDescricao(response.data.descricao || "");
+          setValorUnitario(response.data.valorUnitario || "");
+          setTempoEntregaMinimo(response.data.tempoEntregaMinimo || "");
+          setTempoEntregaMaximo(response.data.tempoEntregaMaximo || "");
         });
     }
   }, [state]);
 
   function salvar() {
-    let produtoRequest = {
-      nome,
+    const produtoRequest = {
+      codigo,
+      titulo,
       descricao,
-      valor
+      valorUnitario: valorUnitario === "" ? null : Number(valorUnitario),
+      tempoEntregaMinimo: tempoEntregaMinimo === "" ? null : Number(tempoEntregaMinimo),
+      tempoEntregaMaximo: tempoEntregaMaximo === "" ? null : Number(tempoEntregaMaximo)
     };
 
     if (idProduto != null) {
       axios.put("http://localhost:8080/api/produto/" + idProduto, produtoRequest)
-        .then(() => console.log("Produto alterado com sucesso."));
+        .then(() => console.log("Produto alterado com sucesso."))
+        .catch(() => console.log("Erro ao alterar produto."));
     } else {
       axios.post("http://localhost:8080/api/produto", produtoRequest)
-        .then(() => console.log("Produto cadastrado com sucesso."));
+        .then(() => console.log("Produto cadastrado com sucesso."))
+        .catch(() => console.log("Erro ao cadastrar produto."));
     }
   }
 
@@ -56,9 +67,18 @@ export default function FormProduto() {
           <Divider />
 
           <Form>
-            <Form.Input label="Nome" value={nome} onChange={e => setNome(e.target.value)} />
-            <Form.TextArea label="Descrição" value={descricao} onChange={e => setDescricao(e.target.value)} />
-            <Form.Input label="Valor" value={valor} onChange={e => setValor(e.target.value)} />
+            <Form.Group widths="equal">
+              <Form.Input label="Código" value={codigo} onChange={(e) => setCodigo(e.target.value)} />
+              <Form.Input label="Título" value={titulo} onChange={(e) => setTitulo(e.target.value)} />
+            </Form.Group>
+
+            <Form.TextArea label="Descrição" value={descricao} onChange={(e) => setDescricao(e.target.value)} />
+
+            <Form.Group widths="equal">
+              <Form.Input label="Valor Unitário" value={valorUnitario} onChange={(e) => setValorUnitario(e.target.value)} />
+              <Form.Input label="Tempo Entrega Mínimo" value={tempoEntregaMinimo} onChange={(e) => setTempoEntregaMinimo(e.target.value)} />
+              <Form.Input label="Tempo Entrega Máximo" value={tempoEntregaMaximo} onChange={(e) => setTempoEntregaMaximo(e.target.value)} />
+            </Form.Group>
           </Form>
 
           <div style={{ marginTop: "4%" }}>

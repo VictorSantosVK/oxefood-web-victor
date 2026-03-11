@@ -157,7 +157,6 @@ export default function ListCliente() {
       <Modal open={openModal} onClose={() => setOpenModal(false)} size="small">
         <Modal.Header>Detalhes do Cliente</Modal.Header>
         <Modal.Content>
-          <p><strong>ID:</strong> {clienteSelecionado.id}</p>
           <p><strong>Nome:</strong> {clienteSelecionado.nome}</p>
           <p><strong>CPF:</strong> {clienteSelecionado.cpf}</p>
           <p><strong>Data de Nascimento:</strong> {formatarData(clienteSelecionado.dataNascimento)}</p>
