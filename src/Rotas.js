@@ -12,10 +12,13 @@ import FormProduto from "./views/produto/FormProduto";
 import ListEntregador from "./views/entregador/ListEntregador";
 import FormEntregador from "./views/entregador/FormEntregador";
 
+import ListPromocao from "./views/promocao/ListPromocao";
+import FormPromocao from "./views/promocao/FormPromocao";
+
 function Rotas() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<ListCliente />} />
 
       <Route path="/list-cliente" element={<ListCliente />} />
       <Route path="/form-cliente" element={<FormCliente />} />
@@ -25,6 +28,9 @@ function Rotas() {
 
       <Route path="/list-entregador" element={<ListEntregador />} />
       <Route path="/form-entregador" element={<FormEntregador />} />
+
+      <Route path="/list-promocao" element={<ListPromocao />} />
+      <Route path="/form-promocao" element={<FormPromocao />} />
     </Routes>
   );
 }
