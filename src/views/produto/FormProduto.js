@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
 import { Button, Container, Divider, Form, Icon } from "semantic-ui-react";
 import MenuSistema from "../../MenuSistema";
+import { notifyError, notifySuccess } from "../../views/util/Util";
 
 export default function FormProduto() {
   const { state } = useLocation();
@@ -26,6 +27,13 @@ export default function FormProduto() {
           setValorUnitario(response.data.valorUnitario || "");
           setTempoEntregaMinimo(response.data.tempoEntregaMinimo || "");
           setTempoEntregaMaximo(response.data.tempoEntregaMaximo || "");
+
+          console.log("Produto carregado com sucesso.");
+          notifySuccess("Produto carregado com sucesso.");
+        })
+        .catch(() => {
+          console.log("Erro ao carregar produto.");
+          notifyError("Erro ao carregar produto.");
         });
     }
   }, [state]);
@@ -42,12 +50,24 @@ export default function FormProduto() {
 
     if (idProduto != null) {
       axios.put("http://localhost:8080/api/produto/" + idProduto, produtoRequest)
-        .then(() => console.log("Produto alterado com sucesso."))
-        .catch(() => console.log("Erro ao alterar produto."));
+        .then(() => {
+          console.log("Produto alterado com sucesso.");
+          notifySuccess("Produto alterado com sucesso.");
+        })
+        .catch(() => {
+          console.log("Erro ao alterar produto.");
+          notifyError("Erro ao alterar produto.");
+        });
     } else {
       axios.post("http://localhost:8080/api/produto", produtoRequest)
-        .then(() => console.log("Produto cadastrado com sucesso."))
-        .catch(() => console.log("Erro ao cadastrar produto."));
+        .then(() => {
+          console.log("Produto cadastrado com sucesso.");
+          notifySuccess("Produto cadastrado com sucesso.");
+        })
+        .catch(() => {
+          console.log("Erro ao cadastrar produto.");
+          notifyError("Erro ao cadastrar produto.");
+        });
     }
   }
 

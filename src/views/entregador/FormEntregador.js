@@ -4,6 +4,7 @@ import InputMask from "comigo-tech-react-input-mask";
 import { Link, useLocation } from "react-router-dom";
 import { Button, Checkbox, Container, Divider, Form, Icon } from "semantic-ui-react";
 import MenuSistema from "../../MenuSistema";
+import { notifyError, notifySuccess } from "../../views/util/Util";
 
 export default function FormEntregador() {
   const { state } = useLocation();
@@ -47,6 +48,13 @@ export default function FormEntregador() {
           setEnderecoCep(response.data.enderecoCep || "");
           setEnderecoUf(response.data.enderecoUf || "");
           setAtivo(response.data.ativo || false);
+
+          console.log("Entregador carregado com sucesso.");
+          notifySuccess("Entregador carregado com sucesso.");
+        })
+        .catch(() => {
+          console.log("Erro ao carregar entregador.");
+          notifyError("Erro ao carregar entregador.");
         });
     }
   }, [state]);
@@ -79,12 +87,24 @@ export default function FormEntregador() {
 
     if (idEntregador != null) {
       axios.put("http://localhost:8080/api/entregador/" + idEntregador, entregadorRequest)
-        .then(() => console.log("Entregador alterado com sucesso."))
-        .catch(() => console.log("Erro ao alterar entregador."));
+        .then(() => {
+          console.log("Entregador alterado com sucesso.");
+          notifySuccess("Entregador alterado com sucesso.");
+        })
+        .catch(() => {
+          console.log("Erro ao alterar entregador.");
+          notifyError("Erro ao alterar entregador.");
+        });
     } else {
       axios.post("http://localhost:8080/api/entregador", entregadorRequest)
-        .then(() => console.log("Entregador cadastrado com sucesso."))
-        .catch(() => console.log("Erro ao cadastrar entregador."));
+        .then(() => {
+          console.log("Entregador cadastrado com sucesso.");
+          notifySuccess("Entregador cadastrado com sucesso.");
+        })
+        .catch(() => {
+          console.log("Erro ao cadastrar entregador.");
+          notifyError("Erro ao cadastrar entregador.");
+        });
     }
   }
 
