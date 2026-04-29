@@ -13,7 +13,7 @@ export default function MenuSistema(props) {
                     as={Link}
                     to='/'
                 />
-
+  
       <Menu.Item
         content="Cliente"
         active={props.tela === "cliente"}
